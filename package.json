@@ -1,0 +1,30 @@
+{
+  "name": "graphql-saga-client",
+  "version": "1.0.0",
+  "description": "a 'call' effect for GraphQL endpoint through redux-saga",
+  "main": "build/index.js",
+  "scripts": {
+    "compile": "tsc",
+    "compile:watch": "tsc --w",
+    "prettify": "npx prettier --write ."
+  },
+  "keywords": [
+    "graphql",
+    "redux-saga",
+    "saga",
+    "effect"
+  ],
+  "author": "Waddah-JD",
+  "license": "MIT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.32.0",
+    "@typescript-eslint/parser": "^4.32.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "^2.4.1",
+    "typescript": "^4.4.3"
+  },
+  "dependencies": {
+    "axios": "^0.22.0"
+  }
+}

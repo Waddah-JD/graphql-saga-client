@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "outDir": "./build",
+    "allowJs": false,
+    "target": "ES6",
+    "lib": ["ES6", "dom"],
+    "module": "ES6",
+    "moduleResolution": "node"
+  }
+}
