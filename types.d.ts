@@ -19,3 +19,5 @@ interface ValidateTimeoutRetrierOptionsParameter {
 }
 
 type RetrierOptions = IntervalRetrierOptions | TimeoutRetrierOptions;
+
+type CallbackHandler = (...args) => unknown;

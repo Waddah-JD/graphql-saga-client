@@ -1,17 +1,20 @@
-import axios, { AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from "axios";
 
-import parseOptionsParameter from "./parseOptionsParameter";
+import validateHandlers from "./paramsValidators/validateHandlers";
+import validateParamters from "./paramsValidators";
 import { handleHeaderAuth } from "./authHandlers";
-import { delay } from "./utils";
+import { performAxiosCallWithFixedTimesRetrier, performAxiosCallWithTimeoutRetrier } from "./utils";
 
 const generateGraphqlSagaEffectClient = (options) => {
-  const { url, auth, retry } = parseOptionsParameter(options);
+  const { url, auth, retry } = validateParamters(options);
 
   return {
     url,
     auth,
     retry,
     query: function* (query, variables, handlers) {
+      const validatedHandlers = validateHandlers(handlers);
+
       const config = {
         method: "POST",
         url: this.url,
@@ -27,38 +30,14 @@ const generateGraphqlSagaEffectClient = (options) => {
         // TODO handle other cases
       }
 
-      let tried = 0;
-
-      while (tried <= this.retry.times) {
-        try {
-          const response = yield axios(config);
-
-          if (handlers && handlers.onSuccess) {
-            if (typeof handlers.onSuccess !== "function") {
-              throw new Error(
-                `'onSuccess' handler must be a function instead it is of type: ${typeof handlers.onSuccess}`
-              );
-            }
-            yield handlers.onSuccess(response.data.data);
-          }
-
-          return response.data.data;
-        } catch (error) {
-          if (tried === this.retry.times) {
-            if (handlers && handlers.onFailure) {
-              if (typeof handlers.onFailure !== "function") {
-                throw new Error(
-                  `'onFailure' handler must be a function instead it is of type: ${typeof handlers.onSuccess}`
-                );
-              }
-              yield handlers.onFailure(error);
-            }
-          } else {
-            yield delay(this.retry.interval);
-          }
-        }
-
-        tried++;
+      let result;
+      if (Object.prototype.hasOwnProperty.call(this.retry, "times")) {
+        result = yield performAxiosCallWithFixedTimesRetrier(this.retry, config, validatedHandlers);
+        return result;
+      }
+      if (Object.prototype.hasOwnProperty.call(this.retry, "timeout")) {
+        result = yield performAxiosCallWithTimeoutRetrier(this.retry, config, validatedHandlers);
+        return result;
       }
     },
   };
