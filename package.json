@@ -17,6 +17,10 @@
     "effect"
   ],
   "author": "Waddah-JD",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Waddah-JD/graphql-saga-client.git"
+  },
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^27.0.2",
