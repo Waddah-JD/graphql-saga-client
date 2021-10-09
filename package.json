@@ -4,6 +4,8 @@
   "description": "a 'call' effect for GraphQL endpoint through redux-saga",
   "main": "build/index.js",
   "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watchAll",
     "compile": "tsc",
     "compile:watch": "tsc --w",
     "prettify": "npx prettier --write ."
@@ -17,11 +19,14 @@
   "author": "Waddah-JD",
   "license": "MIT",
   "devDependencies": {
+    "@types/jest": "^27.0.2",
     "@typescript-eslint/eslint-plugin": "^4.32.0",
     "@typescript-eslint/parser": "^4.32.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
+    "jest": "^27.2.5",
     "prettier": "^2.4.1",
+    "ts-jest": "^27.0.5",
     "typescript": "^4.4.3"
   },
   "dependencies": {
