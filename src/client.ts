@@ -54,7 +54,7 @@ const generateGraphqlSagaEffectClient = (options) => {
               yield handlers.onFailure(error);
             }
           } else {
-            yield delay(this.retry.timeout);
+            yield delay(this.retry.interval);
           }
         }
 
