@@ -5,30 +5,27 @@ import validateParamters from "./paramsValidators";
 import { handleHeaderAuth } from "./authHandlers";
 import { performAxiosCallWithFixedTimesRetrier, performAxiosCallWithTimeoutRetrier } from "./utils";
 
-const generateGraphqlSagaEffectClient = (options) => {
-  const { url, auth, retry } = validateParamters(options);
-
+const generateGraphqlSagaEffectClient = (clientOptions) => {
   return {
-    url,
-    auth,
-    retry,
-    query: function* (query, variables, handlers) {
+    query: function* (query, variables, handlers, queryOptions = {}) {
+      const options = { ...clientOptions, ...queryOptions };
+      const { url, auth, retry } = validateParamters(options);
       const validatedHandlers = validateHandlers(handlers);
 
       const config = {
         method: "POST",
-        url: this.url,
+        url,
         data: { query, variables },
         headers: { "Content-Type": "application/json" },
       } as AxiosRequestConfig;
 
-      if (this.auth) {
-        if (!this.auth.type) {
+      if (auth) {
+        if (!auth.type) {
           throw new Error("missing 'type' value in auth handler");
         }
 
-        if (this.auth.type === "header") {
-          const authorization = yield handleHeaderAuth(this.auth.fn);
+        if (auth.type === "header") {
+          const authorization = yield handleHeaderAuth(auth.fn);
           config.headers.authorization = authorization;
         } else {
           throw new Error("unsupported auth 'type' passed");
@@ -36,12 +33,12 @@ const generateGraphqlSagaEffectClient = (options) => {
       }
 
       let result;
-      if (Object.prototype.hasOwnProperty.call(this.retry, "times")) {
-        result = yield performAxiosCallWithFixedTimesRetrier(this.retry, config, validatedHandlers);
+      if (Object.prototype.hasOwnProperty.call(retry, "times")) {
+        result = yield performAxiosCallWithFixedTimesRetrier(retry, config, validatedHandlers);
         return result;
       }
-      if (Object.prototype.hasOwnProperty.call(this.retry, "timeout")) {
-        result = yield performAxiosCallWithTimeoutRetrier(this.retry, config, validatedHandlers);
+      if (Object.prototype.hasOwnProperty.call(retry, "timeout")) {
+        result = yield performAxiosCallWithTimeoutRetrier(retry, config, validatedHandlers);
         return result;
       }
     },
