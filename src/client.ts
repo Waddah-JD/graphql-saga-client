@@ -17,6 +17,8 @@ const generateGraphqlSagaEffectClient = (clientOptions) => {
         url,
         data: { query, variables },
         headers: { "Content-Type": "application/json" },
+        timeout: retry.interval,
+        timeoutErrorMessage: "Connection timed out!",
       } as AxiosRequestConfig;
 
       if (auth) {
