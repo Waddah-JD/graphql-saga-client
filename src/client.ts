@@ -21,7 +21,7 @@ const generateGraphqlSagaEffectClient = (clientOptions) => {
         timeoutErrorMessage: "Connection timed out!",
       } as AxiosRequestConfig;
 
-      if (auth) {
+      if (auth.enabled) {
         if (!auth.type) {
           throw new Error("missing 'type' value in auth handler");
         }

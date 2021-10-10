@@ -21,3 +21,20 @@ interface ValidateTimeoutRetrierOptionsParameter {
 type RetrierOptions = IntervalRetrierOptions | TimeoutRetrierOptions;
 
 type CallbackHandler = (...args) => unknown;
+
+type HeaderAuthHandler = () => Promise<string>;
+
+type AllowedAuthHanders = HeaderAuthHandler;
+
+interface EnabledAuthOptions {
+  type: string;
+  fn: AllowedAuthHanders;
+}
+
+type RawAuthOptions = EnabledAuthOptions | boolean;
+
+interface ValidAuthOptions {
+  enabled: boolean;
+  type?: string;
+  fn?: AllowedAuthHanders;
+}
