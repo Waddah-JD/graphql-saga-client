@@ -23,11 +23,16 @@ const generateGraphqlSagaEffectClient = (options) => {
       } as AxiosRequestConfig;
 
       if (this.auth) {
+        if (!this.auth.type) {
+          throw new Error("missing 'type' value in auth handler");
+        }
+
         if (this.auth.type === "header") {
           const authorization = yield handleHeaderAuth(this.auth.fn);
           config.headers.authorization = authorization;
+        } else {
+          throw new Error("unsupported auth 'type' passed");
         }
-        // TODO handle other cases
       }
 
       let result;
