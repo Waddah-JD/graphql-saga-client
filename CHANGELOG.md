@@ -1,3 +1,16 @@
+<a name="1.3.0"></a>
+
+# 1.3.0 (2021-10-10)
+
+## Changes
+
+- change Auth param model
+- improve param validators and sanitizors
+- add more unit tests
+- add more typings
+
+---
+
 <a name="1.2.0"></a>
 
 # 1.2.0 (2021-10-10)
