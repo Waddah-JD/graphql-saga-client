@@ -5,9 +5,14 @@ import validateParamters from "./paramsValidators";
 import { handleHeaderAuth } from "./authHandlers";
 import { performAxiosCallWithFixedTimesRetrier, performAxiosCallWithTimeoutRetrier } from "./utils";
 
-const generateGraphqlSagaEffectClient = (clientOptions) => {
+const generateGraphqlSagaEffectClient = (clientOptions: ClientOptions): Client => {
   return {
-    query: function* (query, variables, handlers, queryOptions = {}) {
+    query: function* (
+      query: string,
+      variables: Record<string, unknown> | undefined,
+      handlers?: Handlers,
+      queryOptions?: ClientOptions
+    ) {
       const options = { ...clientOptions, ...queryOptions };
       const { url, auth, retry } = validateParamters(options);
       const validatedHandlers = validateHandlers(handlers);
@@ -22,10 +27,6 @@ const generateGraphqlSagaEffectClient = (clientOptions) => {
       } as AxiosRequestConfig;
 
       if (auth.enabled) {
-        if (!auth.type) {
-          throw new Error("missing 'type' value in auth handler");
-        }
-
         if (auth.type === "header") {
           const authorization = yield handleHeaderAuth(auth.fn);
           config.headers.authorization = authorization;

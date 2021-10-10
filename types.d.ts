@@ -22,6 +22,11 @@ type RetrierOptions = IntervalRetrierOptions | TimeoutRetrierOptions;
 
 type CallbackHandler = (...args) => unknown;
 
+interface Handlers {
+  onSuccess?: CallbackHandler;
+  onFailure?: CallbackHandler;
+}
+
 type HeaderAuthHandler = () => Promise<string>;
 
 type AllowedAuthHanders = HeaderAuthHandler;
@@ -37,4 +42,21 @@ interface ValidAuthOptions {
   enabled: boolean;
   type?: string;
   fn?: AllowedAuthHanders;
+}
+
+interface ClientOptions {
+  url?: string;
+  auth?: RawAuthOptions;
+  retry?: RetrierOptions;
+}
+interface ValidatedClientOptions {
+  url: string;
+  auth: ValidAuthOptions;
+  retry: RetrierOptions;
+}
+
+interface Client {
+  // TODO add more typing to query
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  query: Function;
 }

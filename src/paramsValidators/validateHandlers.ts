@@ -1,7 +1,4 @@
-const validateHandlers = (handlers?: {
-  onSuccess?: CallbackHandler;
-  onFailure?: CallbackHandler;
-}): { onSuccess: CallbackHandler; onFailure: CallbackHandler } => {
+const validateHandlers = (handlers?: Handlers): Handlers => {
   const emptyFunction = () => undefined;
 
   if (!handlers) {

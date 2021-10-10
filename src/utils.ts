@@ -8,6 +8,7 @@ const delay = (timeout: number): Promise<void> => {
   );
 };
 
+// TODO add more typing
 export const performAxiosCallWithTimeoutRetrier = function* (
   retrier,
   config: AxiosRequestConfig,
@@ -38,6 +39,7 @@ export const performAxiosCallWithTimeoutRetrier = function* (
   yield handlers.onFailure(latestError);
 };
 
+// TODO add more typing
 export const performAxiosCallWithFixedTimesRetrier = function* (
   retrier,
   config: AxiosRequestConfig,
