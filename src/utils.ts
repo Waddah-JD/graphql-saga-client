@@ -1,13 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-export const delay = (timeout: number): Promise<void> => {
-  return new Promise<void>((resolve) =>
-    setTimeout(() => {
-      resolve();
-    }, timeout)
-  );
-};
-
 export const performAxiosCallWithTimeoutRetrier = function* (
   retrier,
   config: AxiosRequestConfig,
@@ -22,13 +14,16 @@ export const performAxiosCallWithTimeoutRetrier = function* (
 
   while (running) {
     try {
-      const response = yield axios(config);
+      const response = yield axios({
+        ...config,
+        timeout: retrier.interval,
+        timeoutErrorMessage: "Connection timedout!",
+      });
       const result = response.data.data;
       yield handlers.onSuccess(result);
       return result;
     } catch (error) {
       latestError = error;
-      yield delay(retrier.interval);
     }
   }
 
@@ -47,7 +42,7 @@ export const performAxiosCallWithFixedTimesRetrier = function* (
       const response = yield axios({
         ...config,
         timeout: retrier.interval,
-        timeoutErrorMessage: "connection timedout!",
+        timeoutErrorMessage: "Connection timedout!",
       });
       const result = response.data.data;
       yield handlers.onSuccess(result);
@@ -55,8 +50,6 @@ export const performAxiosCallWithFixedTimesRetrier = function* (
     } catch (error) {
       if (tried === retrier.times) {
         yield handlers.onFailure(error);
-      } else {
-        yield delay(retrier.interval);
       }
     }
 
