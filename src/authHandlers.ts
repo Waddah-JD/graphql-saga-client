@@ -1,3 +1,3 @@
-export const handleHeaderAuth = async (fn: () => Promise<string>): Promise<string> => {
+export const handleHeaderAuth = async (fn: HeaderAuthHandler): Promise<string> => {
   return await fn();
 };
