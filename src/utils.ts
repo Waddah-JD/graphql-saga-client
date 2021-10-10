@@ -22,7 +22,11 @@ export const performAxiosCallWithTimeoutRetrier = function* (
 
   while (running) {
     try {
-      const response = yield axios({ ...config, timeout: retrier.interval });
+      const response = yield axios({
+        ...config,
+        timeout: retrier.interval,
+        timeoutErrorMessage: "connection timedout!",
+      });
       const result = response.data.data;
       yield handlers.onSuccess(result);
       return result;
@@ -32,7 +36,6 @@ export const performAxiosCallWithTimeoutRetrier = function* (
     }
   }
 
-  console.log("sucj");
   yield handlers.onFailure(latestError);
 };
 
@@ -45,7 +48,11 @@ export const performAxiosCallWithFixedTimesRetrier = function* (
 
   while (tried <= retrier.times) {
     try {
-      const response = yield axios(config);
+      const response = yield axios({
+        ...config,
+        timeout: retrier.interval,
+        timeoutErrorMessage: "connection timedout!",
+      });
       const result = response.data.data;
       yield handlers.onSuccess(result);
       return result;
