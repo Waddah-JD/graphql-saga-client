@@ -1,5 +1,16 @@
 ---
 
+<a name="1.2.0"></a>
+
+# 1.2.0 (2021-10-10)
+
+## Changes
+
+- incorporate Axios timeout config
+- add the ability to override options inside query
+
+---
+
 <a name="1.1.0"></a>
 
 # 1.1.0 (2021-10-09)
