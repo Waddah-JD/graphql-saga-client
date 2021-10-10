@@ -3,7 +3,7 @@ import validateAuthOptions from "./validateAuthOptions";
 import validateRetrierOptions from "./validateRetrierOptions";
 
 export default (options) => {
-  const url = validateUrl(options);
+  const url = validateUrl(options.url);
   const auth = validateAuthOptions(options.auth);
   const retry = validateRetrierOptions(options.retry);
 

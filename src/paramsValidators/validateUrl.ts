@@ -1,22 +1,20 @@
-const validateUrl = (options) => {
-  if (typeof options === "string") {
-    // TODO handle different variations: "http://localhost:8888/graphql" | "/graphql" | "https" | .. etc
-    return options;
+const validateUrl = (url: string): string => {
+  if (!url) {
+    throw new Error("'options' must contain a 'url' parameter");
   }
 
-  if (typeof options === "object") {
-    if (!options.url) {
-      throw new Error("'opts' object doesn't contain a 'url' property");
-    }
-    if (typeof options.url !== "string") {
-      throw new Error("'url' proprty in 'opts' object must be of type 'string'");
-    }
-
-    // TODO handle different variations: "http://localhost:8888/graphql" | "/graphql" | "https" | .. etc
-    return options.url;
+  if (typeof url !== "string") {
+    throw new Error("'url' proprty in 'options' must be of type 'string'");
   }
 
-  throw new Error("'opts' parameter must be either a string or an object");
+  const validUrlPrefixes = ["http://", "https://", "www."];
+  for (const validUrlPrefix of validUrlPrefixes) {
+    if (url.startsWith(validUrlPrefix)) {
+      return url;
+    }
+  }
+
+  return `https://${url}`;
 };
 
 export default validateUrl;
