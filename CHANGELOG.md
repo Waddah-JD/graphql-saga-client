@@ -1,3 +1,13 @@
+<a name="1.3.1"></a>
+
+# 1.3.1 (2021-11-21)
+
+## Changes
+
+- add documentation and examples to README
+
+---
+
 <a name="1.3.0"></a>
 
 # 1.3.0 (2021-10-10)
